@@ -1,5 +1,6 @@
 import RadioButtonGroup from "../ui-elements/RadioButtonGroup";
 import HourElement from "../ui-elements/HourElement";
+import AssignmentTable from "../ui-elements/AssignmentTable";
 
 function ProfesoresScreen() {
   return (
@@ -38,9 +39,9 @@ function ProfesoresScreen() {
         <span className="text-primary">Editar</span>
       </div>
       <hr />
-      <div className="d-flex flex-row justify-content-center">
+      <div className="d-flex flex-row justify-content-center pt-2">
         <RadioButtonGroup
-          name="exampleGroup"
+          name="TimeGroup"
           options={[
             { label: "Semanal", value: "1" },
             { label: "Anual", value: "2" },
@@ -49,11 +50,13 @@ function ProfesoresScreen() {
           defaultValue="2"
         />
       </div>
-      <div className="d-flex flex-row justify-content-between py-5">
+      <div className="d-flex flex-row justify-content-between pt-5 pb-4">
         <HourElement hourType="Horas totales" hours={12} />
         <HourElement hourType="Horas lectivas" hours={12} />
         <HourElement hourType="Horas complementarias" hours={2} />
       </div>
+      <hr />
+        <AssignmentTable/>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ButtonGroup, ToggleButton } from 'react-bootstrap';
-import './RadioButtonGroup.css';
+import './TableRadioButton.css';
 
 // Type for the radio option
 type RadioOption = {
@@ -17,7 +17,7 @@ type RadioButtonGroupProps = {
 };
 
 // RadioButtonGroup component
-const RadioButtonGroup: React.FC<RadioButtonGroupProps> = ({
+const TableRadioButton: React.FC<RadioButtonGroupProps> = ({
   name,
   options,
   onChange,
@@ -33,13 +33,13 @@ const RadioButtonGroup: React.FC<RadioButtonGroupProps> = ({
   };
 
   return (
-    <ButtonGroup className="custom-radio-group">
+    <ButtonGroup className="table-radio-group">
       {options.map((option, idx) => (
         <ToggleButton
           key={idx}
           id={`radio-${name}-${idx}`}
           type="radio"
-          variant={value === option.value ? 'light' : 'outline-secondary'}
+          variant={value === option.value ? 'blue' : 'outline-blue'}
           name={name}
           value={option.value}
           checked={value === option.value}
@@ -53,4 +53,4 @@ const RadioButtonGroup: React.FC<RadioButtonGroupProps> = ({
   );
 };
 
-export default RadioButtonGroup;
+export default TableRadioButton;

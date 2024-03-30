@@ -1,0 +1,21 @@
+
+.table-radio-group {
+    width: 50%;
+  }
+  
+  .table-radio-group .btn {
+    color: black;
+    border: none;
+    background-color: transparent;
+    border-radius: 0 !important;
+  }
+ 
+  .table-radio-group .btn.selected {
+    color: blue !important;
+    border-bottom: 2px solid blue !important; 
+  }
+  
+ 
+  .table-radio-group .btn:not(.selected):hover {
+    color: blue;
+  }
