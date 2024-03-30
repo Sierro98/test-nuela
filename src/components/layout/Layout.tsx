@@ -6,6 +6,7 @@ type LayoutProps = {
 };
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  
   return (
     <div className="container-fluid">
       <div className="row flex-nowrap">
