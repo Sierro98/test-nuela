@@ -1,0 +1,28 @@
+.custom-radio-group {
+    background-color: #e6e6e6;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    display: flex;
+    gap: 0.25rem;
+    width: 60%;
+  }
+  
+  .custom-radio-group .btn {
+    margin-right: -1px;
+    border: none;
+  }
+  
+  .custom-radio-group .btn-light.selected {
+    background-color: #ffffff;
+    color: #495057;
+    border-radius: 0.4rem;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .custom-radio-group .btn-outline-secondary {
+    background-color: transparent;
+    color: #6c757d;
+  }
+  

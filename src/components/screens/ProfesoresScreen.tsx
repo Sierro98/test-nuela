@@ -1,4 +1,4 @@
-import RadioButtonGroup from "./RadioButtonGroup";
+import RadioButtonGroup from "../ui-elements/RadioButtonGroup";
 
 function ProfesoresScreen() {
   return (
@@ -37,15 +37,17 @@ function ProfesoresScreen() {
         <span className="text-primary">Editar</span>
       </div>
       <hr />
-      <RadioButtonGroup
-        name="exampleGroup"
-        options={[
-          { label: "Semanal", value: "1" },
-          { label: "Anual", value: "2" },
-        ]}
-        onChange={(value) => console.log(value)}
-        defaultValue="2"
-      />
+      <div className="d-flex flex-row justify-content-center">
+        <RadioButtonGroup
+          name="exampleGroup"
+          options={[
+            { label: "Semanal", value: "1" },
+            { label: "Anual", value: "2" },
+          ]}
+          onChange={(value) => console.log(value)}
+          defaultValue="2"
+        />
+      </div>
     </div>
   );
 }

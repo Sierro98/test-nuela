@@ -1,10 +1,10 @@
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
-import AvatarIndicator from "./AvatarIndicator";
+import AvatarIndicator from "../ui-elements/AvatarIndicator";
 
-import tajamarLogo from "../assets/tajamar-logo.png";
-import scribbleLogo from "../assets/scribble-logo.png";
+import tajamarLogo from "../../assets/tajamar-logo.png";
+import scribbleLogo from "../../assets/scribble-logo.png";
 
 function SideBar() {
   return (

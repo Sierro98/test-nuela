@@ -1,16 +1,13 @@
-import SideBar from "./components/SideBar";
-import ProfesoresScreen from "./components/ProfesoresScreen";
+import ProfesoresScreen from "./components/screens/ProfesoresScreen";
+import Layout from "./components/layout/Layout";
 
 function App() {
   return (
-    <div className="container-fluid">
-      <div className="row flex-nowrap">
-        <SideBar/>
-        <div className="col py-3 bg-light">
-          <ProfesoresScreen/>
-        </div>
-      </div>
-    </div>
+    <>
+      <Layout>
+        <ProfesoresScreen />
+      </Layout>
+    </>
   );
 }
 

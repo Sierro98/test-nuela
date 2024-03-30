@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { ButtonGroup, ToggleButton } from 'react-bootstrap';
 import './RadioButtonGroup.css'; // Make sure to create this CSS file
 
-// Define the type for the radio option
+// Type for the radio option
 type RadioOption = {
   label: string;
   value: string;
 };
 
-// Define the props for the RadioButtonGroup component
+// Props for the RadioButtonGroup component
 type RadioButtonGroupProps = {
   name: string;
   options: RadioOption[];
