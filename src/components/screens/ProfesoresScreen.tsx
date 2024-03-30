@@ -1,4 +1,5 @@
 import RadioButtonGroup from "../ui-elements/RadioButtonGroup";
+import HourElement from "../ui-elements/HourElement";
 
 function ProfesoresScreen() {
   return (
@@ -47,6 +48,11 @@ function ProfesoresScreen() {
           onChange={(value) => console.log(value)}
           defaultValue="2"
         />
+      </div>
+      <div className="d-flex flex-row justify-content-between py-5">
+        <HourElement hourType="Horas totales" hours={12} />
+        <HourElement hourType="Horas lectivas" hours={12} />
+        <HourElement hourType="Horas complementarias" hours={2} />
       </div>
     </div>
   );
