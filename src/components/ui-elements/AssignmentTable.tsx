@@ -64,7 +64,7 @@ const AssignmentTable: React.FC = () => {
       getClasses();
       console.log(data);
     } catch (error) {
-      alert((error as Error).message);
+      console.log((error as Error).message)
     }
   }
 
@@ -86,7 +86,7 @@ const AssignmentTable: React.FC = () => {
         setClasses(data);
       }
     } catch (error) {
-      alert((error as Error).message);
+      console.log((error as Error).message)
     }
   }
 
@@ -96,7 +96,7 @@ const AssignmentTable: React.FC = () => {
       if (error) throw error;
       getClasses();
     } catch (error) {
-      alert((error as Error).message);
+      console.log((error as Error).message)
     }
   }
 
@@ -108,7 +108,7 @@ const AssignmentTable: React.FC = () => {
         setAssignments(data);
       }
     } catch (error) {
-      alert((error as Error).message);
+      console.log((error as Error).message)
     }
   }
 
@@ -120,7 +120,7 @@ const AssignmentTable: React.FC = () => {
         setClassType(data);
       }
     } catch (error) {
-      alert((error as Error).message);
+      console.log((error as Error).message)
     }
   }
 
@@ -132,7 +132,7 @@ const AssignmentTable: React.FC = () => {
         setCourses(data);
       }
     } catch (error) {
-      alert((error as Error).message);
+      console.log((error as Error).message)
     }
   }
 
@@ -144,7 +144,7 @@ const AssignmentTable: React.FC = () => {
         setGroups(data);
       }
     } catch (error) {
-      alert((error as Error).message);
+      console.log((error as Error).message)
     }
   }
 
@@ -156,7 +156,7 @@ const AssignmentTable: React.FC = () => {
         setHours(data);
       }
     } catch (error) {
-      alert((error as Error).message);
+      console.log((error as Error).message)
     }
   }
 
@@ -168,7 +168,7 @@ const AssignmentTable: React.FC = () => {
         setClassSpace(data);
       }
     } catch (error) {
-      alert((error as Error).message);
+      console.log((error as Error).message)
     }
   }
 
