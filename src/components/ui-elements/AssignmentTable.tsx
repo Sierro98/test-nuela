@@ -1,7 +1,131 @@
 import TableRadioButton from "./TableRadioButton";
 import { Col, Form } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { supabase } from "../../utils/supaBaseClient";
+
+import CustomClasses from "../../types/CustomClasses";
+import Assignments from "../../types/Assignments";
+import ClassType from "../../types/ClassType";
+import Courses from "../../types/Courses";
+import Group from "../../types/Group";
+import Hours from "../../types/Hours";
+import ClassSpace from "../../types/ClassSpace";
 
 const AssignmentTable: React.FC = () => {
+  const [viewMode, setViewMode] = useState(false);
+  const [classes, setClasses] = useState<CustomClasses[]>([]);
+  const [assignments, setAssignments] = useState<Assignments[]>([]);
+  const [classType, setClassType] = useState<ClassType[]>([]);
+  const [courses, setCourses] = useState<Courses[]>([]);
+  const [groups, setGroups] = useState<Group[]>([]);
+  const [hours, setHours] = useState<Hours[]>([]);
+  const [classSpace, setClassSpace] = useState<ClassSpace[]>([]);
+
+
+  useEffect(() => {
+    getClasses();
+    getAssignments();
+    getClassType();
+    getCourses();
+    getGroups();
+    getHours();
+    getClassSpace();
+  }, []);
+
+  async function getClasses() {
+    try {
+      const { data, error } = await supabase.from("CLASSES").select("*");
+      if (error) throw error;
+      if (data != null) {
+        setClasses(data);
+      }
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  }
+
+  async function deleteClasses(id: number) {
+    try {
+      const { error } = await supabase.from("CLASSES").delete().eq("id", id);
+      if (error) throw error;
+      getClasses();
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  }
+
+  async function getAssignments() {
+    try {
+      const { data, error } = await supabase.from("CLASS_ASIGNMENT").select("*");
+      if (error) throw error;
+      if (data != null) {
+        setAssignments(data);
+      }
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  }
+
+  async function getClassType() {
+    try {
+      const { data, error } = await supabase.from("CLASS_TYPE").select("*");
+      if (error) throw error;
+      if (data != null) {
+        setClassType(data);
+      }
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  }
+
+  async function getCourses() {
+    try {
+      const { data, error } = await supabase.from("COURSES").select("*").order("id");
+      if (error) throw error;
+      if (data != null) {
+        setCourses(data);
+      }
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  }
+
+  async function getGroups() {
+    try {
+      const { data, error } = await supabase.from("GROUP").select("*");
+      if (error) throw error;
+      if (data != null) {
+        setGroups(data);
+      }
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  }
+
+  async function getHours() {
+    try {
+      const { data, error } = await supabase.from("HOURS").select("*");
+      if (error) throw error;
+      if (data != null) {
+        setHours(data);
+      }
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  }
+
+  async function getClassSpace() {
+    try {
+      const { data, error } = await supabase.from("REGULAR_SPACE").select("*");
+      if (error) throw error;
+      if (data != null) {
+        setClassSpace(data);
+      }
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  }
+
   return (
     <>
       <div className="d-flex flex-column gap-5">
@@ -49,18 +173,38 @@ const AssignmentTable: React.FC = () => {
               </tr>
             </thead>
             <tbody className="table-group-divider">
-              <tr>
-                <td>A</td>
-                <td>B</td>
-                <td>C</td>
-                <td>D</td>
-                <td>E</td>
-                <td>
-                  <span className="text-primary">Ver</span>{" "}
-                  <span className="text-primary ps-3">Editar</span>{" "}
-                  <span className="text-danger ps-3">Eliminar</span>
-                </td>
-              </tr>
+              {classes.map((classes) => (
+                <tr>
+                  <td>{classes.name}</td>
+                  <td>{classes.type}</td>
+                  <td>{classes.course}</td>
+                  <td>{classes.hours} h</td>
+                  <td>{classes.space}</td>
+                  <td>
+                    <span
+                      data-bs-toggle="modal"
+                      data-bs-target="#staticBackdrop"
+                      className="btn text-primary"
+                      onClick={() => setViewMode(true)}
+                    >
+                      Ver
+                    </span>{" "}
+                    <span
+                      data-bs-toggle="modal"
+                      data-bs-target="#staticBackdrop"
+                      className="btn text-primary ps-3"
+                    >
+                      Editar
+                    </span>{" "}
+                    <span
+                      className="btn text-danger ps-3"
+                      onClick={() => deleteClasses(classes.id)}
+                    >
+                      Eliminar
+                    </span>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -86,26 +230,51 @@ const AssignmentTable: React.FC = () => {
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
+                onClick={() => setViewMode(false)}
               ></button>
             </div>
             <div className="modal-body">
               <Col>
                 <Form.Label>Selecciona la asignatura</Form.Label>
-                <Form.Select></Form.Select>
+                <Form.Select>
+                  {assignments.map((assignments) => (
+                    <option value={assignments.name}>{assignments.name}</option>
+                  ))}
+                </Form.Select>
                 <Form.Label>Tipo de asignatura</Form.Label>
-                <Form.Select></Form.Select>
+                <Form.Select>
+                  {classType.map((classType) => (
+                    <option value={classType.name}>{classType.name}</option>
+                  ))}
+                </Form.Select>
                 <Form.Label>Curso</Form.Label>
-                <Form.Select></Form.Select>
+                <Form.Select>
+                  {courses.map((courses) => (
+                    <option value={courses.name}>{courses.name}</option>
+                  ))}
+                </Form.Select>
                 <Form.Label>Grupo</Form.Label>
-                <Form.Select></Form.Select>
+                <Form.Select>
+                  {groups.map((group) => (
+                    <option value={group.name}>{group.name}</option>
+                  ))}
+                </Form.Select>
                 <Form.Label>Horas</Form.Label>
-                <Form.Select></Form.Select>
+                <Form.Select>
+                  {hours.map((hour) => (
+                    <option value={hour.hours}>{hour.hours} h</option>
+                  ))}
+                </Form.Select>
                 <Form.Label>Espacio</Form.Label>
-                <Form.Select></Form.Select>
+                <Form.Select>
+                {classSpace.map((space) => (
+                    <option value={space.space}>{space.space}</option>
+                  ))}
+                </Form.Select>
               </Col>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-primary">
+              <button type="button" className="btn btn-primary" disabled={viewMode}>
                 + Añadir asignatura
               </button>
             </div>
