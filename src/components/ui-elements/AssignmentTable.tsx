@@ -21,6 +21,52 @@ const AssignmentTable: React.FC = () => {
   const [hours, setHours] = useState<Hours[]>([]);
   const [classSpace, setClassSpace] = useState<ClassSpace[]>([]);
 
+  const [selectedAssignment, setSelectedAssignment] = useState("");
+  const [selectedType, setSelectedType] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState("");
+  const [selectedGroup, setSelectedGroup] = useState("");
+  const [selectedHours, setSelectedHours] = useState(0);
+  const [selectedSpace, setSelectedSpace] = useState("");
+
+  const handleAssignmentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedAssignment(e.target.value);
+  };
+  const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedType(e.target.value);
+  };
+  const handleCourseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCourse(e.target.value);
+  };
+  const handleGroupChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedGroup(e.target.value);
+  };
+  const handleHoursChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedHours(Number(e.target.value));
+  };
+  const handleSpaceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSpace(e.target.value);
+  };
+
+  async function handleSubmit() {
+    const dataToInsert = {
+      name: selectedAssignment,
+      course: selectedCourse,
+      group: selectedGroup,
+      hours: selectedHours,
+      space: selectedSpace,
+      type: selectedType,
+      professor_id: 1,
+    };
+
+    try {
+      const { data, error } = await supabase.from("CLASSES").insert(dataToInsert);
+      if (error) throw error;
+      getClasses();
+      console.log(data);
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  }
 
   useEffect(() => {
     getClasses();
@@ -236,45 +282,50 @@ const AssignmentTable: React.FC = () => {
             <div className="modal-body">
               <Col>
                 <Form.Label>Selecciona la asignatura</Form.Label>
-                <Form.Select>
+                <Form.Select onChange={handleAssignmentChange}>
                   {assignments.map((assignments) => (
                     <option value={assignments.name}>{assignments.name}</option>
                   ))}
                 </Form.Select>
                 <Form.Label>Tipo de asignatura</Form.Label>
-                <Form.Select>
+                <Form.Select onChange={handleTypeChange}>
                   {classType.map((classType) => (
                     <option value={classType.name}>{classType.name}</option>
                   ))}
                 </Form.Select>
                 <Form.Label>Curso</Form.Label>
-                <Form.Select>
+                <Form.Select onChange={handleCourseChange}>
                   {courses.map((courses) => (
                     <option value={courses.name}>{courses.name}</option>
                   ))}
                 </Form.Select>
                 <Form.Label>Grupo</Form.Label>
-                <Form.Select>
+                <Form.Select onChange={handleGroupChange}>
                   {groups.map((group) => (
                     <option value={group.name}>{group.name}</option>
                   ))}
                 </Form.Select>
                 <Form.Label>Horas</Form.Label>
-                <Form.Select>
+                <Form.Select onChange={handleHoursChange}>
                   {hours.map((hour) => (
                     <option value={hour.hours}>{hour.hours} h</option>
                   ))}
                 </Form.Select>
                 <Form.Label>Espacio</Form.Label>
-                <Form.Select>
-                {classSpace.map((space) => (
+                <Form.Select onChange={handleSpaceChange}>
+                  {classSpace.map((space) => (
                     <option value={space.space}>{space.space}</option>
                   ))}
                 </Form.Select>
               </Col>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-primary" disabled={viewMode}>
+              <button
+                onClick={handleSubmit}
+                type="button"
+                className="btn btn-primary"
+                disabled={viewMode}
+              >
                 + Añadir asignatura
               </button>
             </div>
