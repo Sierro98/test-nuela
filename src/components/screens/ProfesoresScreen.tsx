@@ -28,6 +28,10 @@ function ProfesoresScreen() {
     }
   }
 
+  const updateHours = () => {
+    getTotalHours();
+  };
+
   return (
     <div className="col-auto pt-5 px-5">
       <div className="flex flex-col">
@@ -81,7 +85,7 @@ function ProfesoresScreen() {
         <HourElement hourType="Horas complementarias" hours={0} />
       </div>
       <hr />
-      <AssignmentTable />
+      <AssignmentTable updateHours={updateHours} />
     </div>
   );
 }

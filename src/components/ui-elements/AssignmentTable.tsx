@@ -11,7 +11,11 @@ import Group from "../../types/Group";
 import Hours from "../../types/Hours";
 import ClassSpace from "../../types/ClassSpace";
 
-const AssignmentTable: React.FC = () => {
+interface Props {
+  updateHours: () => void;
+}
+
+const AssignmentTable: React.FC<Props> = ({updateHours}) => {
   const [viewMode, setViewMode] = useState(false);
   const [classes, setClasses] = useState<CustomClasses[]>([]);
   const [assignments, setAssignments] = useState<Assignments[]>([]);
@@ -21,12 +25,14 @@ const AssignmentTable: React.FC = () => {
   const [hours, setHours] = useState<Hours[]>([]);
   const [classSpace, setClassSpace] = useState<ClassSpace[]>([]);
 
-  const [selectedAssignment, setSelectedAssignment] = useState("");
-  const [selectedType, setSelectedType] = useState("");
-  const [selectedCourse, setSelectedCourse] = useState("");
-  const [selectedGroup, setSelectedGroup] = useState("");
-  const [selectedHours, setSelectedHours] = useState(0);
-  const [selectedSpace, setSelectedSpace] = useState("");
+  const [selectedAssignment, setSelectedAssignment] = useState("Física");
+  const [selectedType, setSelectedType] = useState("OBLIGATORIA");
+  const [selectedCourse, setSelectedCourse] = useState("1º ESO");
+  const [selectedGroup, setSelectedGroup] = useState("A");
+  const [selectedHours, setSelectedHours] = useState(3.5);
+  const [selectedSpace, setSelectedSpace] = useState("1º ESO - A");
+
+  const [selectedClass, setSelectedClass] = useState<CustomClasses | undefined>(undefined);
 
   const handleAssignmentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedAssignment(e.target.value);
@@ -64,7 +70,30 @@ const AssignmentTable: React.FC = () => {
       getClasses();
       console.log(data);
     } catch (error) {
-      console.log((error as Error).message)
+      console.log((error as Error).message);
+    }
+  }
+
+  async function handleUpdate() {
+    const dataToUpdate = {
+      name: selectedAssignment,
+      course: selectedCourse,
+      group: selectedGroup,
+      hours: selectedHours,
+      space: selectedSpace,
+      type: selectedType,
+      professor_id: 1,
+    };
+    try {
+      const { data, error } = await supabase
+        .from("CLASSES")
+        .update(dataToUpdate)
+        .eq("id", selectedClass?.id);
+      if (error) throw error;
+      getClasses();
+      console.log(data);
+    } catch (error) {
+      console.log((error as Error).message);
     }
   }
 
@@ -86,7 +115,7 @@ const AssignmentTable: React.FC = () => {
         setClasses(data);
       }
     } catch (error) {
-      console.log((error as Error).message)
+      console.log((error as Error).message);
     }
   }
 
@@ -96,7 +125,7 @@ const AssignmentTable: React.FC = () => {
       if (error) throw error;
       getClasses();
     } catch (error) {
-      console.log((error as Error).message)
+      console.log((error as Error).message);
     }
   }
 
@@ -108,7 +137,7 @@ const AssignmentTable: React.FC = () => {
         setAssignments(data);
       }
     } catch (error) {
-      console.log((error as Error).message)
+      console.log((error as Error).message);
     }
   }
 
@@ -120,7 +149,7 @@ const AssignmentTable: React.FC = () => {
         setClassType(data);
       }
     } catch (error) {
-      console.log((error as Error).message)
+      console.log((error as Error).message);
     }
   }
 
@@ -132,7 +161,7 @@ const AssignmentTable: React.FC = () => {
         setCourses(data);
       }
     } catch (error) {
-      console.log((error as Error).message)
+      console.log((error as Error).message);
     }
   }
 
@@ -144,7 +173,7 @@ const AssignmentTable: React.FC = () => {
         setGroups(data);
       }
     } catch (error) {
-      console.log((error as Error).message)
+      console.log((error as Error).message);
     }
   }
 
@@ -156,7 +185,7 @@ const AssignmentTable: React.FC = () => {
         setHours(data);
       }
     } catch (error) {
-      console.log((error as Error).message)
+      console.log((error as Error).message);
     }
   }
 
@@ -168,7 +197,7 @@ const AssignmentTable: React.FC = () => {
         setClassSpace(data);
       }
     } catch (error) {
-      console.log((error as Error).message)
+      console.log((error as Error).message);
     }
   }
 
@@ -231,7 +260,10 @@ const AssignmentTable: React.FC = () => {
                       data-bs-toggle="modal"
                       data-bs-target="#staticBackdrop"
                       className="btn text-primary"
-                      onClick={() => setViewMode(true)}
+                      onClick={() => {
+                        setViewMode(true);
+                        setSelectedClass(classes);
+                      }}
                     >
                       Ver
                     </span>{" "}
@@ -239,6 +271,9 @@ const AssignmentTable: React.FC = () => {
                       data-bs-toggle="modal"
                       data-bs-target="#staticBackdrop"
                       className="btn text-primary ps-3"
+                      onClick={() => {
+                        setSelectedClass(classes);
+                      }}
                     >
                       Editar
                     </span>{" "}
@@ -276,57 +311,91 @@ const AssignmentTable: React.FC = () => {
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-                onClick={() => setViewMode(false)}
               ></button>
             </div>
             <div className="modal-body">
               <Col>
                 <Form.Label>Selecciona la asignatura</Form.Label>
-                <Form.Select onChange={handleAssignmentChange}>
+                <Form.Select
+                  defaultValue={selectedClass != undefined ? selectedClass.name : "Física"}
+                  disabled={viewMode}
+                  onChange={handleAssignmentChange}
+                >
                   {assignments.map((assignments) => (
                     <option value={assignments.name}>{assignments.name}</option>
                   ))}
                 </Form.Select>
                 <Form.Label>Tipo de asignatura</Form.Label>
-                <Form.Select onChange={handleTypeChange}>
+                <Form.Select
+                  defaultValue={selectedClass != undefined ? selectedClass.type : "OBLIGATORIA"}
+                  disabled={viewMode}
+                  onChange={handleTypeChange}
+                >
                   {classType.map((classType) => (
                     <option value={classType.name}>{classType.name}</option>
                   ))}
                 </Form.Select>
                 <Form.Label>Curso</Form.Label>
-                <Form.Select onChange={handleCourseChange}>
+                <Form.Select
+                  defaultValue={selectedClass != undefined ? selectedClass.course : "1º ESO"}
+                  disabled={viewMode}
+                  onChange={handleCourseChange}
+                >
                   {courses.map((courses) => (
                     <option value={courses.name}>{courses.name}</option>
                   ))}
                 </Form.Select>
                 <Form.Label>Grupo</Form.Label>
-                <Form.Select onChange={handleGroupChange}>
+                <Form.Select
+                  defaultValue={selectedClass != undefined ? selectedClass.group : "A"}
+                  disabled={viewMode}
+                  onChange={handleGroupChange}
+                >
                   {groups.map((group) => (
                     <option value={group.name}>{group.name}</option>
                   ))}
                 </Form.Select>
                 <Form.Label>Horas</Form.Label>
-                <Form.Select onChange={handleHoursChange}>
+                <Form.Select
+                  defaultValue={selectedClass != undefined ? selectedClass.hours : "3.5"}
+                  disabled={viewMode}
+                  onChange={handleHoursChange}
+                >
                   {hours.map((hour) => (
                     <option value={hour.hours}>{hour.hours} h</option>
                   ))}
                 </Form.Select>
                 <Form.Label>Espacio</Form.Label>
-                <Form.Select onChange={handleSpaceChange}>
+                <Form.Select
+                  defaultValue={selectedClass?.space || "1º ESO - A"}
+                  disabled={viewMode}
+                  onChange={handleSpaceChange}
+                >
                   {classSpace.map((space) => (
-                    <option value={space.space}>{space.space}</option>
+                    <option key={space.space} value={space.space}>
+                      {space.space}
+                    </option>
                   ))}
                 </Form.Select>
               </Col>
             </div>
             <div className="modal-footer">
               <button
-                onClick={handleSubmit}
+                onClick={() => {
+                  if (selectedClass != undefined) {
+                    handleUpdate();
+                  } else {
+                    handleSubmit();
+                  }
+                  setSelectedClass(undefined);
+                  updateHours();
+                }}
                 type="button"
+                data-bs-dismiss="modal"
                 className="btn btn-primary"
                 disabled={viewMode}
               >
-                + Añadir asignatura
+                {selectedClass != undefined ? "Editar asignatura" : "+ Añadir asignatura"}
               </button>
             </div>
           </div>
