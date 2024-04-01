@@ -114,6 +114,7 @@ const AssignmentTable: React.FC<Props> = ({ updateHours }) => {
       if (data != null) {
         setClasses(data);
       }
+      updateHours();
     } catch (error) {
       console.log((error as Error).message);
     }
@@ -273,13 +274,17 @@ const AssignmentTable: React.FC<Props> = ({ updateHours }) => {
                       className="btn text-primary ps-3"
                       onClick={() => {
                         setSelectedClass(classes);
+                        updateHours();
                       }}
                     >
                       Editar
                     </span>{" "}
                     <span
                       className="btn text-danger ps-3"
-                      onClick={() => deleteClasses(classes.id)}
+                      onClick={() => {
+                        deleteClasses(classes.id);
+                        updateHours();
+                      }}
                     >
                       Eliminar
                     </span>
@@ -338,7 +343,7 @@ const AssignmentTable: React.FC<Props> = ({ updateHours }) => {
                   value={selectedClass != undefined ? selectedClass.type : "OBLIGATORIA"}
                   disabled={viewMode}
                   onChange={(e) => {
-                    handleTypeChange;
+                    handleTypeChange(e);
                     if (selectedClass) {
                       selectedClass.type = e.target.value;
                     }
@@ -353,7 +358,7 @@ const AssignmentTable: React.FC<Props> = ({ updateHours }) => {
                   value={selectedClass != undefined ? selectedClass.course : "1º ESO"}
                   disabled={viewMode}
                   onChange={(e) => {
-                    handleCourseChange;
+                    handleCourseChange(e);
                     if (selectedClass) {
                       selectedClass.course = e.target.value;
                     }
@@ -368,7 +373,7 @@ const AssignmentTable: React.FC<Props> = ({ updateHours }) => {
                   value={selectedClass != undefined ? selectedClass.group : "A"}
                   disabled={viewMode}
                   onChange={(e) => {
-                    handleGroupChange;
+                    handleGroupChange(e);
                     if (selectedClass) {
                       selectedClass.group = e.target.value;
                     }
@@ -383,7 +388,7 @@ const AssignmentTable: React.FC<Props> = ({ updateHours }) => {
                   value={selectedClass != undefined ? selectedClass.hours : "3.5"}
                   disabled={viewMode}
                   onChange={(e) => {
-                    handleHoursChange;
+                    handleHoursChange(e);
                     if (selectedClass) {
                       selectedClass.hours = Number(e.target.value);
                     }
@@ -398,7 +403,7 @@ const AssignmentTable: React.FC<Props> = ({ updateHours }) => {
                   value={selectedClass?.space || "1º ESO - A"}
                   disabled={viewMode}
                   onChange={(e) => {
-                    handleSpaceChange;
+                    handleSpaceChange(e);
                     if (selectedClass) {
                       selectedClass.space = e.target.value;
                     }
@@ -421,7 +426,6 @@ const AssignmentTable: React.FC<Props> = ({ updateHours }) => {
                     handleSubmit();
                   }
                   setSelectedClass(undefined);
-                  updateHours();
                 }}
                 type="button"
                 data-bs-dismiss="modal"
