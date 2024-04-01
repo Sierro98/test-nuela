@@ -15,7 +15,7 @@ interface Props {
   updateHours: () => void;
 }
 
-const AssignmentTable: React.FC<Props> = ({updateHours}) => {
+const AssignmentTable: React.FC<Props> = ({ updateHours }) => {
   const [viewMode, setViewMode] = useState(false);
   const [classes, setClasses] = useState<CustomClasses[]>([]);
   const [assignments, setAssignments] = useState<Assignments[]>([]);
@@ -109,7 +109,7 @@ const AssignmentTable: React.FC<Props> = ({updateHours}) => {
 
   async function getClasses() {
     try {
-      const { data, error } = await supabase.from("CLASSES").select("*");
+      const { data, error } = await supabase.from("CLASSES").select("*").order("created_at");
       if (error) throw error;
       if (data != null) {
         setClasses(data);
@@ -311,15 +311,23 @@ const AssignmentTable: React.FC<Props> = ({updateHours}) => {
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
+                onClick={() => {
+                  setViewMode(false);
+                }}
               ></button>
             </div>
             <div className="modal-body">
               <Col>
                 <Form.Label>Selecciona la asignatura</Form.Label>
                 <Form.Select
-                  defaultValue={selectedClass != undefined ? selectedClass.name : "Física"}
+                  value={selectedClass != undefined ? selectedClass.name : "Física"}
                   disabled={viewMode}
-                  onChange={handleAssignmentChange}
+                  onChange={(e) => {
+                    handleAssignmentChange(e);
+                    if (selectedClass) {
+                      selectedClass.name = e.target.value;
+                    }
+                  }}
                 >
                   {assignments.map((assignments) => (
                     <option value={assignments.name}>{assignments.name}</option>
@@ -327,9 +335,14 @@ const AssignmentTable: React.FC<Props> = ({updateHours}) => {
                 </Form.Select>
                 <Form.Label>Tipo de asignatura</Form.Label>
                 <Form.Select
-                  defaultValue={selectedClass != undefined ? selectedClass.type : "OBLIGATORIA"}
+                  value={selectedClass != undefined ? selectedClass.type : "OBLIGATORIA"}
                   disabled={viewMode}
-                  onChange={handleTypeChange}
+                  onChange={(e) => {
+                    handleTypeChange;
+                    if (selectedClass) {
+                      selectedClass.type = e.target.value;
+                    }
+                  }}
                 >
                   {classType.map((classType) => (
                     <option value={classType.name}>{classType.name}</option>
@@ -337,9 +350,14 @@ const AssignmentTable: React.FC<Props> = ({updateHours}) => {
                 </Form.Select>
                 <Form.Label>Curso</Form.Label>
                 <Form.Select
-                  defaultValue={selectedClass != undefined ? selectedClass.course : "1º ESO"}
+                  value={selectedClass != undefined ? selectedClass.course : "1º ESO"}
                   disabled={viewMode}
-                  onChange={handleCourseChange}
+                  onChange={(e) => {
+                    handleCourseChange;
+                    if (selectedClass) {
+                      selectedClass.course = e.target.value;
+                    }
+                  }}
                 >
                   {courses.map((courses) => (
                     <option value={courses.name}>{courses.name}</option>
@@ -347,9 +365,14 @@ const AssignmentTable: React.FC<Props> = ({updateHours}) => {
                 </Form.Select>
                 <Form.Label>Grupo</Form.Label>
                 <Form.Select
-                  defaultValue={selectedClass != undefined ? selectedClass.group : "A"}
+                  value={selectedClass != undefined ? selectedClass.group : "A"}
                   disabled={viewMode}
-                  onChange={handleGroupChange}
+                  onChange={(e) => {
+                    handleGroupChange;
+                    if (selectedClass) {
+                      selectedClass.group = e.target.value;
+                    }
+                  }}
                 >
                   {groups.map((group) => (
                     <option value={group.name}>{group.name}</option>
@@ -357,9 +380,14 @@ const AssignmentTable: React.FC<Props> = ({updateHours}) => {
                 </Form.Select>
                 <Form.Label>Horas</Form.Label>
                 <Form.Select
-                  defaultValue={selectedClass != undefined ? selectedClass.hours : "3.5"}
+                  value={selectedClass != undefined ? selectedClass.hours : "3.5"}
                   disabled={viewMode}
-                  onChange={handleHoursChange}
+                  onChange={(e) => {
+                    handleHoursChange;
+                    if (selectedClass) {
+                      selectedClass.hours = Number(e.target.value);
+                    }
+                  }}
                 >
                   {hours.map((hour) => (
                     <option value={hour.hours}>{hour.hours} h</option>
@@ -367,9 +395,14 @@ const AssignmentTable: React.FC<Props> = ({updateHours}) => {
                 </Form.Select>
                 <Form.Label>Espacio</Form.Label>
                 <Form.Select
-                  defaultValue={selectedClass?.space || "1º ESO - A"}
+                  value={selectedClass?.space || "1º ESO - A"}
                   disabled={viewMode}
-                  onChange={handleSpaceChange}
+                  onChange={(e) => {
+                    handleSpaceChange;
+                    if (selectedClass) {
+                      selectedClass.space = e.target.value;
+                    }
+                  }}
                 >
                   {classSpace.map((space) => (
                     <option key={space.space} value={space.space}>

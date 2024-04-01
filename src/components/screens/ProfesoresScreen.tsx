@@ -58,7 +58,7 @@ function ProfesoresScreen() {
             </span>
           </div>
           <div className="d-flex flex-column">
-            <h2>Marta Martinez</h2>
+            <h2>Marta Martínez</h2>
             <a href="#" className="text-secondary">
               martamartinze@gmail.com
             </a>
